@@ -31,23 +31,23 @@ public class DemoBigTable {
             adminClient = createAdminClient();
             dataClient = createDataClient();
 
-            System.out.println("## Creating table");
-            createTable(adminClient);
+            //System.out.println("## Creating table");
+            //createTable(adminClient);
 
-            System.out.println("## Creating Column Family");
-            createColumnFamily(adminClient);
+            //System.out.println("## Creating Column Family");
+            //createColumnFamily(adminClient);
 
-            System.out.println("## Reading Table MetaData");
-            getTableMeta(adminClient);
+            //System.out.println("## Reading Table MetaData");
+            //getTableMeta(adminClient);
 
-            System.out.println("## Reading file");
-            readFile();
+            //System.out.println("## Reading file");
+            //readFile();
 
-            System.out.println("## Loading data");
-            writeBatch(dataClient);
+            //System.out.println("## Loading data");
+            //writeBatch(dataClient);
 
-            System.out.println("## Reading record by key");
-            getRecordsByKey(dataClient, "AMZN#20210507T00:00:00");
+            //System.out.println("## Reading record by key");
+            //getRecordsByKey(dataClient, "AMZN#20210507T00:00:00");
 
             System.out.println("## Reading records by key range");
             getRecordsByKeyRange(dataClient, "AMZN#20210501T00:00:00", "AMZN#20210507T00:00:00");
@@ -86,9 +86,6 @@ public class DemoBigTable {
 
     private static void getRecordsByKeyRange(BigtableDataClient dataClient, String start, String end) {
 
-        // Initialize client that will be used to send requests. This client only needs to be created
-        // once, and can be reused for multiple requests. After completing all of your requests, call
-        // the "close" method on the client to safely clean up any remaining background resources.
         try {
             Query query = Query.create(Constants.BT_TABLE_ID).range(start, end);
             ServerStream<Row> rows = dataClient.readRows(query);
@@ -138,7 +135,6 @@ public class DemoBigTable {
         try (BufferedReader br = new BufferedReader(new FileReader("HistoricalDataToLoad.csv"))) {
             String line;
 
-
             //skip first file first line
             br.readLine();
             while ((line = br.readLine()) != null) {
@@ -164,15 +160,13 @@ public class DemoBigTable {
 
     public static BigtableTableAdminClient createAdminClient() {
         try {
-            // Creates the settings to configure a bigtable table admin client.
             BigtableTableAdminSettings adminSettings =
                     BigtableTableAdminSettings.newBuilder()
                             .setProjectId(Constants.BT_PROJECT_ID)
                             .setInstanceId(Constants.BT_INSTANCE_ID)
                             .build();
 
-            // Creates a bigtable table admin client.
-            return BigtableTableAdminClient.create(adminSettings);
+           return BigtableTableAdminClient.create(adminSettings);
         } catch (IOException e) {
             System.out.println("Error createAdmin");
             e.printStackTrace();
@@ -239,8 +233,8 @@ public class DemoBigTable {
                 System.out.printf("Column Family %s%n", colFamily);
             }
             System.out.printf(
-                    "\t%s: %s @%s%n",
-                    cell.getQualifier().toStringUtf8(), cell.getValue().toStringUtf8(), cell.getTimestamp());
+                    "\t%s: %s %n",
+                    cell.getQualifier().toStringUtf8(), cell.getValue().toStringUtf8());
         }
         System.out.println();
     }
